@@ -70,10 +70,7 @@ export default function Login({ navigation }) {
       <View>
         <Header title="login" />
         <Text style={styles.input}>oh my it is finally working</Text>
-        <Pressable
-          onPress={() => navigation.navigate('Register')}
-          style={buttons}
-        >
+        <Pressable onPress={() => navigation.navigate('Main')} style={buttons}>
           <Text style={styles.text}>Login</Text>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Register')} style={link}>

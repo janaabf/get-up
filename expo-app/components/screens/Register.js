@@ -26,7 +26,7 @@ export default function Register({ navigation }) {
       <View>
         <Header title="register" />
         <Text style={styles.input}>oh my it is finally working</Text>
-        <Pressable onPress={() => navigation.navigate('Login')} style={buttons}>
+        <Pressable onPress={() => navigation.navigate('Main')} style={buttons}>
           <Text style={text}>Register</Text>
         </Pressable>
       </View>
