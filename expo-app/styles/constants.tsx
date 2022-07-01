@@ -1,11 +1,10 @@
 export const colors = {
-  background: '#0F0920',
-  backgroundLight: '#221C3E',
-  text: '#F2F0FF',
-  input: '#F2F0FF',
-  accentText: '#F451A9',
-  buttonsLight: '#7B61FF',
-  buttonsDark: '#35277C',
+  black: '#0F0920',
+  highlight: '#221C3E',
+  white: '#F2F0FF',
+  pink: '#F451A9',
+  purple: '#7B61FF',
+  darkPurple: '#35277C',
 };
 
 export const buttons = {
@@ -13,7 +12,7 @@ export const buttons = {
   justifyContent: 'flex-start',
   paddingVertical: 12,
   paddingHorizontal: 32,
-  margin: 15,
+  margin: 5,
   borderRadius: 4,
   backgroundColor: '#7B61FF',
 };
@@ -22,12 +21,14 @@ export const link = {
   alignItems: 'center',
   justifyContent: 'flex-start',
   paddingVertical: 12,
-  paddingHorizontal: 32,
-  margin: 10,
-  borderRadius: 4,
+  margin: 5,
+  color: colors.pink,
+  fontFamily: 'Comfortaa_400Regular',
 };
 
-export const text = {
-  fontFamily: 'Comfortaa_400Regular',
-  color: colors.text,
+export const container = {
+  flex: 1,
+  backgroundColor: colors.black,
+  alignItems: 'center',
+  justifyContent: 'center',
 };

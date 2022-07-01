@@ -20,13 +20,13 @@ export default function Header(props: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.background,
+    backgroundColor: colors.black,
     alignItems: 'center',
   },
 
   title: {
     fontFamily: 'Comfortaa_400Regular',
-    color: colors.text,
+    color: colors.white,
     fontSize: 36,
   },
 });
