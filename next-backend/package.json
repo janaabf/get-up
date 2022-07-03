@@ -1,0 +1,25 @@
+{
+  "name": "next-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "migrate": "dotenv ley"
+  },
+  "dependencies": {
+    "dotenv-cli": "^5.1.0",
+    "dotenv-safe": "^8.2.0",
+    "ley": "^0.7.1",
+    "next": "12.2.0",
+    "postgres": "^3.2.4",
+    "react": "18.2.0",
+    "react-dom": "18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "8.19.0",
+    "eslint-config-next": "12.2.0"
+  }
+}

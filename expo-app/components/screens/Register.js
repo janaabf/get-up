@@ -33,10 +33,25 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Login({ navigation }) {
-  const [appIsReady, setAppIsReady] = useState(false);
+export default function Login({ route, navigation }) {
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
+
+  // const onRegisterHandler = async function registerHandler() {
+  //   const registerResponse = await fetch('/api/register', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+  //       username: email,
+  //       password: password,
+  //     }),
+  //   });
+
+  //   const registerResponseBody = await registerResponse.json();
+
+  //   console.log(registerResponseBody);
 
   return (
     <SafeAreaView style={container}>
@@ -53,13 +68,20 @@ export default function Login({ navigation }) {
 
         <TextInput
           style={styles.input}
+          textContentType="password"
           placeholder="password"
           onChangeText={onChangePassword}
           value={password}
         />
       </View>
       <View style={styles.buttonsContainer}>
-        <Pressable onPress={() => navigation.navigate('Main')} style={buttons}>
+        <Pressable
+          onPress={() => {
+            // route.params.onRegisterHandler();
+            navigation.navigate('Main');
+          }}
+          style={buttons}
+        >
           <Text style={styles.text}>register</Text>
         </Pressable>
       </View>

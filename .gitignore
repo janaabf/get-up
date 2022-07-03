@@ -1,3 +1,5 @@
 
 .eslintcache
 *.tsbuildinfo
+*.tsbuildinfo
+node_modules
