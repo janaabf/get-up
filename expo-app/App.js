@@ -1,20 +1,26 @@
+import { AntDesign } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import Login from './components/screens/Login';
-import Main from './components/screens/Main';
 import Register from './components/screens/Register';
+import UserProfile from './components/screens/users/Profile';
+import Welcome from './components/screens/Welcome';
+import { colors } from './styles/constants';
 
-const stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <stack.Navigator screenOptions={{ headerShown: false }}>
-        <stack.Screen name="Login" component={Login} />
-        <stack.Screen name="Register" component={Register} />
-        <stack.Screen name="Main" component={Main} />
-      </stack.Navigator>
+      <StatusBar style="light" />
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="Profile" component={UserProfile} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

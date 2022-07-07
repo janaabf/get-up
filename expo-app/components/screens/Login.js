@@ -1,11 +1,24 @@
 import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
+import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { buttons, colors, container, link } from '../../styles/constants';
-import Header from '../Header';
+import {
+  buttons,
+  colors,
+  container,
+  link,
+  titles,
+} from '../../styles/constants';
+
+const { manifest } = Constants;
+
+const apiBaseUrl =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/login`
+    : 'https://api.example.com';
 
 const styles = StyleSheet.create({
   input: {
@@ -23,13 +36,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Comfortaa_400Regular',
     color: colors.white,
   },
-  inputContainer: {
+  container: {
     flex: 1,
     justifyContent: 'center',
   },
-  buttonsContainer: {
+  headerContainer: {
     flex: 1,
-    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -37,6 +50,7 @@ export default function Login({ navigation }) {
   const [appIsReady, setAppIsReady] = useState(false);
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
+  const [errors, setErrors] = useState([]);
 
   useEffect(() => {
     async function prepare() {
@@ -65,16 +79,45 @@ export default function Login({ navigation }) {
     }
   }, [appIsReady]);
 
+  async function loginHandler() {
+    const loginResponse = await fetch(apiBaseUrl, {
+      // use api from expo app on dev tools (shake phone)
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        password: password,
+      }),
+    });
+
+    const loginResponseBody = await loginResponse.json();
+
+    console.log('loginbody', loginResponseBody);
+    // if user exists: error
+    if ('errors' in loginResponseBody) {
+      setErrors(loginResponseBody.errors);
+      return;
+    } else {
+      navigation.push('Welcome');
+      return;
+    }
+  }
+
   if (!appIsReady) {
     return <View style={container} />;
   }
   return (
     <SafeAreaView onLayout={onLayoutRootView} style={container}>
-      <View style={styles.inputContainer}>
-        <Header title="login" />
+      <View style={styles.container}>
+        <View style={styles.headerContainer}>
+          <Text style={titles}>login</Text>
+        </View>
         <Text style={styles.text}>e-mail</Text>
         <TextInput
           style={styles.input}
+          textContentType="emailAddress"
           placeholder="e-mail"
           onChangeText={onChangeEmail}
           value={email}
@@ -83,14 +126,27 @@ export default function Login({ navigation }) {
 
         <TextInput
           textContentType="password"
+          secureTextEntry={true}
           style={styles.input}
           placeholder="password"
           onChangeText={onChangePassword}
           value={password}
         />
       </View>
-      <View style={styles.buttonsContainer}>
-        <Pressable onPress={() => navigation.navigate('Main')} style={buttons}>
+      {errors.map((error) => (
+        <Text style={styles.text} key={`error-${error.message}`}>
+          {error.message}
+        </Text>
+      ))}
+      <View style={styles.container}>
+        <Pressable
+          onPress={() => {
+            loginHandler().catch((e) => {
+              console.log(e);
+            });
+          }}
+          style={buttons}
+        >
           <Text style={styles.text}>Login</Text>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Register')} style={link}>

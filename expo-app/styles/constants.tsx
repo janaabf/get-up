@@ -28,7 +28,15 @@ export const link = {
 
 export const container = {
   flex: 1,
+  padding: 20,
+  paddingTop: 40,
   backgroundColor: colors.black,
   alignItems: 'center',
   justifyContent: 'center',
+};
+
+export const titles = {
+  fontFamily: 'Comfortaa_400Regular',
+  color: colors.white,
+  fontSize: 36,
 };

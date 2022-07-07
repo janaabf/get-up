@@ -1,5 +1,4 @@
 import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
-import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -12,6 +11,7 @@ import {
   link,
   titles,
 } from '../../styles/constants';
+import Header from '../Header';
 
 const styles = StyleSheet.create({
   input: {
@@ -29,10 +29,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Comfortaa_400Regular',
     color: colors.white,
   },
-  error: {
-    fontFamily: 'Comfortaa_400Regular',
-    color: colors.pink,
-  },
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -43,52 +39,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const { manifest } = Constants;
-
-// connects automatically to the right api
-const apiBaseUrl =
-  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
-    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/register`
-    : 'https://api.example.com';
-
-export default function Register({ navigation }) {
-  const [appIsReady, setAppIsReady] = useState(false);
+export default function Login({ navigation }) {
   const [email, onChangeEmail] = useState('');
   const [password, onChangePassword] = useState('');
-  const [errors, setErrors] = useState([]);
-
-  async function registerHandler() {
-    const registerResponse = await fetch(apiBaseUrl, {
-      // use api from expo app on dev tools
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-      }),
-    });
-
-    const registerResponseBody = await registerResponse.json();
-
-    console.log('responseeee', registerResponseBody);
-
-    // if user exists: error
-    if ('errors' in registerResponseBody) {
-      setErrors(registerResponseBody.errors);
-      return;
-    } else {
-      navigation.push('Welcome');
-      return;
-    }
-  }
 
   return (
     <SafeAreaView style={container}>
       <View style={styles.container}>
         <View style={styles.headerContainer}>
-          <Text style={titles}>register</Text>
+          <Text style={titles}>Settings</Text>
         </View>
         <Text style={styles.text}>e-mail</Text>
         <TextInput
@@ -109,24 +68,9 @@ export default function Register({ navigation }) {
           value={password}
         />
       </View>
-      {errors.map((error) => (
-        <Text style={styles.text} key={`error-${error.message}`}>
-          {error.message}
-        </Text>
-      ))}
       <View style={styles.container}>
-        <Pressable
-          onPress={() => {
-            registerHandler().catch((e) => {
-              console.log(e);
-            });
-          }}
-          style={buttons}
-        >
-          <Text style={styles.text}>register</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Login')} style={link}>
-          <Text style={link}>{'<'} login</Text>
+        <Pressable onPress={() => navigation.navigate('Main')} style={buttons}>
+          <Text style={styles.text}>save changes</Text>
         </Pressable>
       </View>
     </SafeAreaView>
