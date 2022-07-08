@@ -1,12 +1,32 @@
-// import 'react-native-gesture-handler';
-import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { StatusBar } from 'expo-status-bar';
+import React, { createContext, useState } from 'react';
 import { Text, View } from 'react-native';
+import Login from './components/screens/Login';
+import Register from './components/screens/Register';
+import UserProfile from './components/screens/users/Profile';
+import Welcome from './components/screens/Welcome';
+
+// to store and use the user information across the app
+export const UserContext = createContext();
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
-  console.log('helloo');
+  const [user, setUser] = useState();
+
   return (
-    <View>
-      <Text>hello</Text>
-    </View>
+    <UserContext.Provider value={{ setUser, user }}>
+      <NavigationContainer>
+        <StatusBar style="light" />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="Login" component={Login} />
+          <Stack.Screen name="Register" component={Register} />
+          <Stack.Screen name="Welcome" component={Welcome} />
+          <Stack.Screen name="Profile" component={UserProfile} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserContext.Provider>
   );
 }

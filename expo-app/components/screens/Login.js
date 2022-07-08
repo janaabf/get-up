@@ -2,7 +2,13 @@ import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
 import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -12,7 +18,9 @@ import {
   link,
   titles,
 } from '../../styles/constants';
+import { UserContext } from '../util/Context';
 
+// access api route
 const { manifest } = Constants;
 
 const apiBaseUrl =
@@ -20,6 +28,7 @@ const apiBaseUrl =
     ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/login`
     : 'https://api.example.com';
 
+// styles
 const styles = StyleSheet.create({
   input: {
     fontFamily: 'Comfortaa_400Regular',
@@ -52,6 +61,9 @@ export default function Login({ navigation }) {
   const [password, onChangePassword] = useState('');
   const [errors, setErrors] = useState([]);
 
+  const { setUser } = useContext(UserContext);
+
+  // load font
   useEffect(() => {
     async function prepare() {
       try {
@@ -79,9 +91,10 @@ export default function Login({ navigation }) {
     }
   }, [appIsReady]);
 
+  // login function
   async function loginHandler() {
+    // fetch userinfo from database
     const loginResponse = await fetch(apiBaseUrl, {
-      // use api from expo app on dev tools (shake phone)
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -95,7 +108,15 @@ export default function Login({ navigation }) {
     const loginResponseBody = await loginResponse.json();
 
     console.log('loginbody', loginResponseBody);
-    // if user exists: error
+
+    if (loginResponseBody) {
+      setUser({
+        id: loginResponseBody.user.id,
+      });
+    }
+    console.log('usercontext', loginResponseBody.user.id);
+
+    // handling errors (user doesn't exist, pw wrong)
     if ('errors' in loginResponseBody) {
       setErrors(loginResponseBody.errors);
       return;

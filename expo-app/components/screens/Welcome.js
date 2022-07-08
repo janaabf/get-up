@@ -2,11 +2,12 @@ import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
 import { FontAwesome } from '@expo/vector-icons';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { buttons, colors, container, link } from '../../styles/constants';
 import Header from '../Header';
+import { UserContext } from '../util/Context';
 
 const styles = StyleSheet.create({
   input: {
@@ -42,6 +43,8 @@ const styles = StyleSheet.create({
 
 export default function Welcome({ navigation }) {
   const [appIsReady, setAppIsReady] = useState(false);
+  const { user } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     async function prepare() {
@@ -84,7 +87,7 @@ export default function Welcome({ navigation }) {
           onPress={() => navigation.navigate('Profile')}
         />
         <Header title="welcome!" />
-        <Text style={styles.inputContainer}>greetings</Text>
+        <Text style={styles.text}>greetings {user.id}</Text>
         <Pressable onPress={() => navigation.navigate('Login')} style={buttons}>
           <Text style={styles.text}>Login page</Text>
         </Pressable>
