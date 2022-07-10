@@ -2,6 +2,8 @@ import camelcaseKeys from 'camelcase-keys';
 import { config } from 'dotenv-safe';
 import postgres from 'postgres';
 
+// -------------- connect to database
+
 function connectOneTimeToDatabase() {
   let sql;
 
@@ -22,46 +24,48 @@ function connectOneTimeToDatabase() {
 
 const sql = connectOneTimeToDatabase();
 
+// -------------- users
+
 export type User = {
   id: number;
-  email: string;
+  username: string;
 };
 
 type UserWithPasswordHash = User & {
   passwordHash: string;
 };
 
-export async function createUser(email: string, passwordHash: string) {
+export async function createUser(username: string, passwordHash: string) {
   const [user] = await sql<[User]>`
   INSERT INTO users
-    (email, password_hash)
+    (username, password_hash)
   VALUES
-    (${email}, ${passwordHash})
+    (${username}, ${passwordHash})
   RETURNING
     id,
-    email
+    username
   `;
 
   return camelcaseKeys(user);
 }
 
-export async function getUserByEmail(email: string) {
-  if (!email) return undefined;
+export async function getUserByUsername(username: string) {
+  if (!username) return undefined;
 
   const [user] = await sql<[User | undefined]>`
     SELECT
       id,
-      email
+      username
     FROM
       users
     WHERE
-      email = ${email}
+      username = ${username}
   `;
   return user && camelcaseKeys(user);
 }
 
-export async function getUserByEmailWithPasswordHash(email: string) {
-  if (!email) return undefined;
+export async function getUserByUsernameWithPasswordHash(username: string) {
+  if (!username) return undefined;
 
   const [user] = await sql<[UserWithPasswordHash | undefined]>`
     SELECT
@@ -69,7 +73,7 @@ export async function getUserByEmailWithPasswordHash(email: string) {
     FROM
       users
     WHERE
-      email = ${email}
+      username = ${username}
   `;
   return user && camelcaseKeys(user);
 }
@@ -80,10 +84,30 @@ export async function getUserById(userId: number) {
   const [user] = await sql<[User | undefined]>`
   SELECT
     id,
-    email
+    username
   FROM
     users
   WHERE
     id = ${userId}`;
   return user && camelcaseKeys(user);
+}
+
+// -------------- sessions
+
+type Session = {
+  id: number;
+  token: string;
+};
+
+export async function createSession(token: string, userId: User['id']) {
+  const [session] = await sql<[Session]>`
+  INSERT INTO sessions
+    (token, user_id)
+    VALUES
+    (${token}, ${userId})
+    RETURNING
+      id,
+      token`;
+
+  return camelcaseKeys(session);
 }

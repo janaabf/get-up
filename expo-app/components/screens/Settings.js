@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 });
 
 export default function Login({ navigation }) {
-  const [email, onChangeEmail] = useState('');
+  const [username, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
 
   return (
@@ -52,10 +52,10 @@ export default function Login({ navigation }) {
         <Text style={styles.text}>e-mail</Text>
         <TextInput
           style={styles.input}
-          textContentType="emailAddress"
+          textContentType="name"
           placeholder="e-mail"
-          onChangeText={onChangeEmail}
-          value={email}
+          onChangeText={onChangeUsername}
+          value={username}
         />
         <Text style={styles.text}>password</Text>
 

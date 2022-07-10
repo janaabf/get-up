@@ -1,8 +1,5 @@
-import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
 import Constants from 'expo-constants';
-import * as Font from 'expo-font';
-import * as SplashScreen from 'expo-splash-screen';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -12,6 +9,7 @@ import {
   link,
   titles,
 } from '../../styles/constants';
+import { UserContext } from '../util/Context';
 
 const styles = StyleSheet.create({
   input: {
@@ -53,9 +51,11 @@ const apiBaseUrl =
 
 export default function Register({ navigation }) {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [email, onChangeEmail] = useState('');
+  const [username, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
   const [errors, setErrors] = useState([]);
+
+  const { setUser } = useContext(UserContext);
 
   async function registerHandler() {
     const registerResponse = await fetch(apiBaseUrl, {
@@ -65,20 +65,25 @@ export default function Register({ navigation }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
+        username: username,
         password: password,
       }),
     });
 
     const registerResponseBody = await registerResponse.json();
 
-    console.log('responseeee', registerResponseBody);
+    console.log('responsebody', registerResponseBody);
 
     // if user exists: error
+    // if user doesn't exist set user & go to welcome
     if ('errors' in registerResponseBody) {
       setErrors(registerResponseBody.errors);
+      console.log('error');
       return;
     } else {
+      setUser({
+        id: registerResponseBody.user.id,
+      });
       navigation.push('Welcome');
       return;
     }
@@ -93,10 +98,10 @@ export default function Register({ navigation }) {
         <Text style={styles.text}>e-mail</Text>
         <TextInput
           style={styles.input}
-          textContentType="emailAddress"
+          textContentType="name"
           placeholder="e-mail"
-          onChangeText={onChangeEmail}
-          value={email}
+          onChangeText={onChangeUsername}
+          value={username}
         />
         <Text style={styles.text}>password</Text>
 

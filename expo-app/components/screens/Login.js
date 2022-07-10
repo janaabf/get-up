@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
 
 export default function Login({ navigation }) {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [email, onChangeEmail] = useState('');
+  const [username, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
   const [errors, setErrors] = useState([]);
 
@@ -100,7 +100,7 @@ export default function Login({ navigation }) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: email,
+        username: username,
         password: password,
       }),
     });
@@ -109,18 +109,15 @@ export default function Login({ navigation }) {
 
     console.log('loginbody', loginResponseBody);
 
-    if (loginResponseBody) {
-      setUser({
-        id: loginResponseBody.user.id,
-      });
-    }
-    console.log('usercontext', loginResponseBody.user.id);
-
     // handling errors (user doesn't exist, pw wrong)
     if ('errors' in loginResponseBody) {
+      console.log('error');
       setErrors(loginResponseBody.errors);
       return;
     } else {
+      setUser({
+        id: loginResponseBody.user.id,
+      });
       navigation.push('Welcome');
       return;
     }
@@ -138,10 +135,10 @@ export default function Login({ navigation }) {
         <Text style={styles.text}>e-mail</Text>
         <TextInput
           style={styles.input}
-          textContentType="emailAddress"
+          textContentType="name"
           placeholder="e-mail"
-          onChangeText={onChangeEmail}
-          value={email}
+          onChangeText={onChangeUsername}
+          value={username}
         />
         <Text style={styles.text}>password</Text>
 

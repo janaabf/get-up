@@ -1,6 +1,11 @@
+import crypto from 'node:crypto';
 import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getUserByEmailWithPasswordHash } from '../../util/database';
+import { createSerializedRegisterSessionTokenCookie } from '../../util/cookies';
+import {
+  createSession,
+  getUserByUsernameWithPasswordHash,
+} from '../../util/database';
 
 type RegisterResponseBody =
   | { errors: { message: string }[] }
@@ -10,32 +15,32 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RegisterResponseBody>,
 ) {
-  console.log(req.body);
+  console.log('req.body api', req.body);
   // check method
   if (req.method === 'POST') {
-    // check if email & pw are strings
+    // check if username & pw are strings
     if (
-      typeof req.body.email !== 'string' ||
+      typeof req.body.username !== 'string' ||
       typeof req.body.password !== 'string' ||
-      !req.body.email ||
+      !req.body.username ||
       !req.body.password
     ) {
       res
         .status(400)
-        .json({ errors: [{ message: 'email or password not provided' }] });
+        .json({ errors: [{ message: 'username or password not provided' }] });
       return;
     }
 
     // encrypted user information DO NOT EXPOSE!!!
-    const privateUserInfo = await getUserByEmailWithPasswordHash(
-      req.body.email,
+    const privateUserInfo = await getUserByUsernameWithPasswordHash(
+      req.body.username,
     );
 
     // 1. check if user is registered
     if (!privateUserInfo) {
       res
         .status(401)
-        .json({ errors: [{ message: 'password or email incorrect' }] });
+        .json({ errors: [{ message: 'password or username incorrect' }] });
       return;
     }
 
@@ -48,13 +53,28 @@ export default async function handler(
     if (!passwordMatches) {
       res
         .status(401)
-        .json({ errors: [{ message: 'password or email incorrect' }] });
+        .json({ errors: [{ message: 'password or username incorrect' }] });
       return;
     }
 
     const userId = privateUserInfo.id;
 
-    res.status(200).json({ user: { id: userId } });
+    // 3. create a session (random session token, using the 64 base characters)
+    const token = crypto.randomBytes(80).toString('base64');
+    console.log('token', token);
+
+    const session = await createSession(token, userId);
+    console.log(session);
+
+    const serializedCookie = await createSerializedRegisterSessionTokenCookie(
+      session.token,
+    );
+
+    // return status
+    res
+      .status(200)
+      .setHeader('set-Cookie', serializedCookie) // set the cookie???????????
+      .json({ user: { id: userId } });
   } else {
     res.status(400).json({ errors: [{ message: 'method not allowed' }] });
   }
