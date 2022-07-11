@@ -8,14 +8,13 @@ type RegisterResponseBody =
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<RegisterResponseBody>,
+  res: NextApiResponse<void>,
 ) {
-  console.log('req cookie token', req);
   // check method
   if (req.method === 'DELETE') {
     // delete session
     const token = req.cookies.sessionToken;
-    console.log(token);
+    console.log('token cookies', token);
 
     await deleteSession(token);
 
@@ -25,8 +24,10 @@ export default async function handler(
       .setHeader(
         'Set-Cookie',
         cookie.serialize('sessionToken', '', { maxAge: -1, path: '/' }),
-      );
-  } else {
-    res.status(400).json({ errors: [{ message: 'method not allowed' }] });
+      )
+      .send();
   }
+  // else {
+  //   res.status(400).json({ errors: [{ message: 'method not allowed' }] });
+  // }
 }

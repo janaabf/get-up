@@ -62,3 +62,71 @@ Gives less options, e.g. misses the Network Inspection and does not show the tre
 5. for more information options access:
    - Open http://localhost:19000/debugger-ui/
    - Right click > inspect
+
+---
+
+        <TouchableOpacity
+          onPress={async () => {
+            await fetch(apiBaseUrl, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+            });
+            navigation.navigate('Login');
+          }}
+          style={link}
+        >
+          <Text style={link}>Logout</Text>
+        </TouchableOpacity>
+
+import { serialize } from 'cookie';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { deleteSessionByToken } from '../../util/database';
+
+type LogoutRequestBody = {
+username: string;
+password: string;
+};
+
+type LogoutNextApiRequest = Omit<NextApiRequest, 'body'> & {
+body: LogoutRequestBody;
+};
+
+export default async function LogoutHandler(
+request: LogoutNextApiRequest,
+response: NextApiResponse<void>,
+) {
+if (request.method === 'DELETE') {
+// 1. get the cookie from <TouchableOpacity
+onPress={async () => {
+await fetch(apiBaseUrl, {
+method: 'DELETE',
+headers: {
+'Content-Type': 'application/json',
+},
+});
+navigation.navigate('Login');
+}}
+style={link} >
+<Text style={link}>Logout</Text>
+</TouchableOpacity>
+import { serialize } from 'cookie';
+import { NextApiRequest, NextApiResponse } from 'next';
+import { deleteSessionByToken } from '../../util/database';
+
+type LogoutRequestBody = {
+username: string;
+password: string;
+};
+
+type LogoutNextApiRequest = Omit<NextApiRequest, 'body'> & {
+body: LogoutRequestBody;
+};
+
+export default async function LogoutHandler(
+request: LogoutNextApiRequest,
+response: NextApiResponse<void>,
+) {
+if (request.method === 'DELETE') {
+// 1. get the cookie from
