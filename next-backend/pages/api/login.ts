@@ -70,10 +70,12 @@ export default async function handler(
       session.token,
     );
 
+    console.log('serializedcookie', serializedCookie);
+
     // return status
     res
       .status(200)
-      .setHeader('set-Cookie', serializedCookie) // set the cookie???????????
+      .setHeader('Set-Cookie', serializedCookie)
       .json({ user: { id: userId } });
   } else {
     res.status(400).json({ errors: [{ message: 'method not allowed' }] });

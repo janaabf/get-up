@@ -1,5 +1,6 @@
 import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
 import { FontAwesome } from '@expo/vector-icons';
+import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
@@ -8,6 +9,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { buttons, colors, container, link } from '../../styles/constants';
 import Header from '../Header';
 import { UserContext } from '../util/Context';
+
+// access api route
+const { manifest } = Constants;
+
+const apiBaseUrl =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/logout`
+    : 'https://api.example.com';
 
 const styles = StyleSheet.create({
   input: {
@@ -73,6 +82,26 @@ export default function Welcome({ navigation }) {
     }
   }, [appIsReady]);
 
+  // logout function
+  async function logoutHandler() {
+    // fetch userinfo from database
+    const logoutResponse = await fetch(apiBaseUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(req.body.user);
+
+    const logoutResponseBody = await logoutResponse.json();
+
+    console.log('loginbody', logoutResponseBody);
+
+    setUser('');
+    navigation.push('Login');
+  }
+
   if (!appIsReady) {
     return <View style={container} />;
   }
@@ -88,8 +117,15 @@ export default function Welcome({ navigation }) {
         />
         <Header title="welcome!" />
         <Text style={styles.text}>greetings {user.id}</Text>
-        <Pressable onPress={() => navigation.navigate('Login')} style={buttons}>
-          <Text style={styles.text}>Login page</Text>
+        <Pressable
+          onPress={() => {
+            logoutHandler().catch((e) => {
+              console.log(e);
+            });
+          }}
+          style={buttons}
+        >
+          <Text style={styles.text}>Logout</Text>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Register')} style={link}>
           <Text style={link}>Registration page</Text>

@@ -10,6 +10,8 @@ import { UserContext } from './components/util/Context';
 
 const Stack = createNativeStackNavigator();
 
+// check for session token!
+
 export default function App() {
   const [user, setUser] = useState();
 
