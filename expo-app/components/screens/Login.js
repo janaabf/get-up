@@ -20,10 +20,10 @@ import {
 } from '../../styles/constants';
 import { UserContext } from '../util/Context';
 
-// access api route
 const { manifest } = Constants;
 
-const apiBaseUrl =
+// access api url
+export const apiBaseUrl =
   typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
     ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/login`
     : 'https://api.example.com';
@@ -105,6 +105,8 @@ export default function Login({ navigation }) {
       }),
     });
 
+    console.log(loginResponse.headers);
+
     const loginResponseBody = await loginResponse.json();
 
     console.log('loginbody', loginResponseBody);
@@ -118,7 +120,7 @@ export default function Login({ navigation }) {
       setUser({
         id: loginResponseBody.user.id,
       });
-      navigation.push('Welcome');
+      // navigation.push('Welcome');
       return;
     }
   }
@@ -132,11 +134,11 @@ export default function Login({ navigation }) {
         <View style={styles.headerContainer}>
           <Text style={titles}>login</Text>
         </View>
-        <Text style={styles.text}>e-mail</Text>
+        <Text style={styles.text}>username</Text>
         <TextInput
           style={styles.input}
           textContentType="name"
-          placeholder="e-mail"
+          placeholder="username"
           onChangeText={onChangeUsername}
           value={username}
         />

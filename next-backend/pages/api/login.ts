@@ -15,7 +15,6 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<RegisterResponseBody>,
 ) {
-  console.log('req.body api', req.body);
   // check method
   if (req.method === 'POST') {
     // check if username & pw are strings
@@ -61,16 +60,14 @@ export default async function handler(
 
     // 3. create a session (random session token, using the 64 base characters)
     const token = crypto.randomBytes(80).toString('base64');
-    console.log('token', token);
 
     const session = await createSession(token, userId);
-    console.log(session);
 
     const serializedCookie = await createSerializedRegisterSessionTokenCookie(
       session.token,
     );
 
-    console.log('serializedcookie', serializedCookie);
+    console.log('serializedCookie', serializedCookie);
 
     // return status
     res

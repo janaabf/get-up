@@ -4,8 +4,8 @@ import { StatusBar } from 'expo-status-bar';
 import React, { createContext, useState } from 'react';
 import { Text, View } from 'react-native';
 import Login from './components/screens/Login';
+import UserProfile from './components/screens/Profile';
 import Register from './components/screens/Register';
-import UserProfile from './components/screens/users/Profile';
 import Welcome from './components/screens/Welcome';
 
 // to store and use the user information across the app

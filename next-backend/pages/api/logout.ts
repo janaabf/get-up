@@ -2,19 +2,19 @@ import cookie from 'cookie';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { deleteSession } from '../../util/database';
 
-type RegisterResponseBody =
+type LogoutResponseBody =
   | { errors: { message: string }[] }
   | { session: { id: number } };
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<void>,
+  res: NextApiResponse<void | LogoutResponseBody>,
 ) {
   // check method
   if (req.method === 'DELETE') {
     // delete session
     const token = req.cookies.sessionToken;
-    console.log('token cookies', token);
+    console.log('token cookies', req.cookies);
 
     await deleteSession(token);
 
@@ -26,8 +26,7 @@ export default async function handler(
         cookie.serialize('sessionToken', '', { maxAge: -1, path: '/' }),
       )
       .send();
+  } else {
+    res.status(400).json({ errors: [{ message: 'method not allowed' }] });
   }
-  // else {
-  //   res.status(400).json({ errors: [{ message: 'method not allowed' }] });
-  // }
 }

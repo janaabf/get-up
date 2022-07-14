@@ -7,8 +7,8 @@ import {
   container,
   link,
   titles,
-} from '../../../styles/constants';
-import Header from '../../Header';
+} from '../../styles/constants';
+import Header from '../Header';
 
 const styles = StyleSheet.create({
   input: {

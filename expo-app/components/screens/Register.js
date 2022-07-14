@@ -11,6 +11,14 @@ import {
 } from '../../styles/constants';
 import { UserContext } from '../util/Context';
 
+const { manifest } = Constants;
+
+// access api url
+export const apiBaseUrl =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/register`
+    : 'https://api.example.com';
+
 const styles = StyleSheet.create({
   input: {
     fontFamily: 'Comfortaa_400Regular',
@@ -41,16 +49,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const { manifest } = Constants;
-
-// connects automatically to the right api
-const apiBaseUrl =
-  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
-    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/register`
-    : 'https://api.example.com';
-
 export default function Register({ navigation }) {
-  const [appIsReady, setAppIsReady] = useState(false);
   const [username, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
   const [errors, setErrors] = useState([]);

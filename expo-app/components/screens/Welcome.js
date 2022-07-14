@@ -10,10 +10,10 @@ import { buttons, colors, container, link } from '../../styles/constants';
 import Header from '../Header';
 import { UserContext } from '../util/Context';
 
-// access api route
 const { manifest } = Constants;
 
-const apiBaseUrl =
+// access api url
+export const apiBaseUrl =
   typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
     ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/logout`
     : 'https://api.example.com';
@@ -85,21 +85,14 @@ export default function Welcome({ navigation }) {
   // logout function
   async function logoutHandler() {
     // fetch userinfo from database
-    const logoutResponse = await fetch(apiBaseUrl, {
+    await fetch(apiBaseUrl, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
     });
 
-    console.log(req.body.user);
-
-    const logoutResponseBody = await logoutResponse.json();
-
-    console.log('loginbody', logoutResponseBody);
-
-    setUser('');
-    navigation.push('Login');
+    setUser(null);
   }
 
   if (!appIsReady) {
@@ -127,8 +120,8 @@ export default function Welcome({ navigation }) {
         >
           <Text style={styles.text}>Logout</Text>
         </Pressable>
-        <Pressable onPress={() => navigation.navigate('Register')} style={link}>
-          <Text style={link}>Registration page</Text>
+        <Pressable onPress={() => navigation.navigate('Alarm')} style={link}>
+          <Text style={link}>Alarm page</Text>
         </Pressable>
       </View>
     </SafeAreaView>

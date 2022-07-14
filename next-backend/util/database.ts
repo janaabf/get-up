@@ -35,6 +35,7 @@ type UserWithPasswordHash = User & {
   passwordHash: string;
 };
 
+// to register a new user
 export async function createUser(username: string, passwordHash: string) {
   const [user] = await sql<[User]>`
   INSERT INTO users
@@ -49,6 +50,7 @@ export async function createUser(username: string, passwordHash: string) {
   return camelcaseKeys(user);
 }
 
+// for registration: check if user already exists
 export async function getUserByUsername(username: string) {
   if (!username) return undefined;
 
@@ -64,6 +66,7 @@ export async function getUserByUsername(username: string) {
   return user && camelcaseKeys(user);
 }
 
+// for login, checking the password & setting user
 export async function getUserByUsernameWithPasswordHash(username: string) {
   if (!username) return undefined;
 
@@ -78,6 +81,7 @@ export async function getUserByUsernameWithPasswordHash(username: string) {
   return user && camelcaseKeys(user);
 }
 
+// ????? not needed
 export async function getUserById(userId: number) {
   if (!userId) return undefined;
 
@@ -99,6 +103,7 @@ type Session = {
   token: string;
 };
 
+// when login/registration create session token
 export async function createSession(token: string, userId: User['id']) {
   const [session] = await sql<[Session]>`
   INSERT INTO sessions
@@ -109,10 +114,12 @@ export async function createSession(token: string, userId: User['id']) {
       id,
       token`;
 
-  console.log('session', session);
+  await deleteExpiredSession();
+
   return camelcaseKeys(session);
 }
 
+// for logout, delete session token
 export async function deleteSession(token: string) {
   const [session] = await sql<[Session | undefined]>`
   DELETE FROM
@@ -125,6 +132,7 @@ export async function deleteSession(token: string) {
   return session && camelcaseKeys(session);
 }
 
+// delete expired sessions (when creating new one)
 export async function deleteExpiredSession() {
   const sessions = await sql<[Session[]]>`
   DELETE FROM
@@ -137,7 +145,7 @@ export async function deleteExpiredSession() {
   return sessions.map((session) => camelcaseKeys(session));
 }
 
-// joint query
+// joint query to get user info
 export async function getUserByValidSessionToken(token: string) {
   if (!token) return undefined;
 

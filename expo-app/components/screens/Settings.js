@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function Login({ navigation }) {
+export default function Settings({ navigation }) {
   const [username, onChangeUsername] = useState('');
   const [password, onChangePassword] = useState('');
 
