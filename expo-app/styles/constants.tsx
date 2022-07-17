@@ -18,10 +18,11 @@ export const container = {
 
 export const buttons = {
   alignItems: 'center',
+  alignSelf: 'center',
   justifyContent: 'flex-start',
   paddingVertical: 12,
   paddingHorizontal: 32,
-  margin: 5,
+  margin: 100,
   borderRadius: 4,
   backgroundColor: '#7B61FF',
 };

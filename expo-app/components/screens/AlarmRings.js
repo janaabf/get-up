@@ -1,7 +1,8 @@
 import { Audio } from 'expo-av';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Notifications from 'expo-notifications';
-import React, { useEffect, useState } from 'react';
+import LottieView from 'lottie-react-native';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Alert,
   Modal,
@@ -15,24 +16,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { buttons, colors, container } from '../../styles/constants';
 
 const styles = StyleSheet.create({
-  input: {
-    fontFamily: 'Comfortaa_400Regular',
-    color: colors.black,
-    height: 40,
-    width: 300,
-    marginBottom: 20,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: colors.white,
-    borderRadius: 10,
-  },
   text: {
     fontFamily: 'Comfortaa_400Regular',
     color: colors.white,
-  },
-  timeleft: {
-    fontFamily: 'Comfortaa_400Regular',
-    color: 'grey',
   },
   modalView: {
     flex: 1,
@@ -51,6 +37,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
+  // button: {
+  //   alignSelf: 'center',
+  //   justifyContent: 'flex-start',
+  //   paddingVertical: 12,
+  //   paddingHorizontal: 32,
+  //   margin: 20,
+  //   borderRadius: 4,
+  //   backgroundColor: '#7B61FF',
+  // },
 });
 
 // handles the notification
@@ -63,6 +58,7 @@ Notifications.setNotificationHandler({
 });
 
 export default function AlarmRings({ navigation }) {
+  const animation = useRef(null);
   const [sound, setSound] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   const [scanned, setScanned] = useState(false);
@@ -97,20 +93,9 @@ export default function AlarmRings({ navigation }) {
         },
         trigger: null,
       });
-      console.log('sent notif');
     }
     scheduleNotificationAsync().catch(() => {});
   }, []);
-
-  // to stop sound from looping
-  // useEffect(() => {
-  //   return sound
-  //     ? () => {
-  //         console.log('Unloading Sound');
-  //         sound.unloadAsync();
-  //       }
-  //     : undefined;
-  // }, [sound]);
 
   const handleBarCodeScanned = () => {
     setScanned(true);
@@ -141,6 +126,15 @@ export default function AlarmRings({ navigation }) {
             </View>
           </View>
         </Modal>
+        <LottieView
+          autoPlay
+          ref={animation}
+          style={{
+            height: 400,
+            backgroundColor: colors.black,
+          }}
+          source={require('../../assets/alarm-animation.json')}
+        />
         <TouchableOpacity
           onPress={() => {
             {
@@ -150,7 +144,9 @@ export default function AlarmRings({ navigation }) {
           }}
           style={buttons}
         >
-          <Text style={styles.text}>Stop Alarm</Text>
+          <>
+            <Text style={styles.text}>Stop Alarm</Text>
+          </>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
