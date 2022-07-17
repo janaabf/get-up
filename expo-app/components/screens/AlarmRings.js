@@ -1,6 +1,10 @@
 import { Audio } from 'expo-av';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Notifications from 'expo-notifications';
 import React, { useEffect, useState } from 'react';
 import {
+  Alert,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -30,10 +34,38 @@ const styles = StyleSheet.create({
     fontFamily: 'Comfortaa_400Regular',
     color: 'grey',
   },
+  modalView: {
+    flex: 1,
+    width: 405,
+    margin: 70,
+
+    alignItems: 'center',
+  },
+  barcode: {
+    flex: 1,
+    width: 400,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+});
+
+// handles the notification
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
 });
 
 export default function AlarmRings({ navigation }) {
   const [sound, setSound] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [scanned, setScanned] = useState(false);
   // const [show, setShow] = useState(false); // show barcode scanner
 
   // sound
@@ -52,9 +84,22 @@ export default function AlarmRings({ navigation }) {
 
   async function stopSound() {
     await sound.stopAsync();
+    Vibration.cancel();
   }
   useEffect(() => {
     playSound();
+    // sends notification
+    async function scheduleNotificationAsync() {
+      Notifications.scheduleNotificationAsync({
+        content: {
+          title: 'Alarm ringing!',
+          body: 'time to get up~',
+        },
+        trigger: null,
+      });
+      console.log('sent notif');
+    }
+    scheduleNotificationAsync().catch(() => {});
   }, []);
 
   // to stop sound from looping
@@ -67,35 +112,45 @@ export default function AlarmRings({ navigation }) {
   //     : undefined;
   // }, [sound]);
 
+  const handleBarCodeScanned = () => {
+    setScanned(true);
+    stopSound();
+    alert(`You did it! Good morning <3`);
+    setModalVisible(false);
+    navigation.push('Alarm');
+  };
+
   return (
     <SafeAreaView style={container}>
       <View style={styles.container}>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert('Modal has been closed.');
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <BarCodeScanner
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                style={styles.barcode}
+              />
+            </View>
+          </View>
+        </Modal>
         <TouchableOpacity
           onPress={() => {
-            playSound();
+            {
+              setModalVisible(true);
+              setScanned(false);
+            }
           }}
           style={buttons}
         >
-          <Text style={styles.text}>play sound</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            stopSound();
-            // setSound();
-            Vibration.cancel();
-            // navigation.push('Alarm');
-          }}
-          style={buttons}
-        >
-          <Text style={styles.text}>stop sound</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.push('Scanner');
-          }}
-          style={buttons}
-        >
-          <Text style={styles.text}>Barcode Scanner</Text>
+          <Text style={styles.text}>Stop Alarm</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

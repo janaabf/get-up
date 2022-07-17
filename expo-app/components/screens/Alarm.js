@@ -1,10 +1,10 @@
 import DateTimePickerAndroid from '@react-native-community/datetimepicker';
-import { NavigationHelpersContext } from '@react-navigation/native';
 import * as Notifications from 'expo-notifications';
 import react, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   Vibration,
   View,
@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Comfortaa_400Regular',
     color: 'grey',
     alignSelf: 'center',
+    marginBottom: 50,
   },
   alarm: {
     flex: 1,
@@ -50,7 +51,7 @@ const styles = StyleSheet.create({
 export default function Alarm({ navigation }) {
   const [date, setDate] = useState(new Date()); // time for alarm
   const [show, setShow] = useState(false); // show time/date picker
-  const [text, setText] = useState(); // display text
+  const [text, setText] = useState(undefined); // display text
 
   // handles setting the alarm time (Date format)
   const onChange = (event, selectedDate) => {
@@ -66,16 +67,7 @@ export default function Alarm({ navigation }) {
   const { days, hours, minutes, seconds } =
     useReactCountdown(dateToEndCountdownAt);
 
-  // handles and sets the notification once the date is set
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-      shouldPlaySound: true,
-      shouldSetBadge: false,
-    }),
-  });
-
-  // calls the notification when time is picked
+  // sets alarm for selected time
   useEffect(() => {
     const alarmTime = new Date(date);
     alarmTime.setSeconds(0);
@@ -83,18 +75,11 @@ export default function Alarm({ navigation }) {
     const ringsInMilliseconds = alarmTime.getTime() - dateNow.getTime();
 
     if (text) {
-      // so it skips notif on first render
       setTimeout(function activateAlarm() {
         console.log('it worked!');
-        navigation.navigate('AlarmRings');
+        navigation.push('AlarmRings');
       }, ringsInMilliseconds);
-      Notifications.scheduleNotificationAsync({
-        content: {
-          title: 'Alarm is set!',
-          body: `You gotta get up at ${alarmTime.getHours()}:${alarmTime.getMinutes()} o'Clock`,
-        },
-        trigger: null,
-      });
+      ToastAndroid.show(`Alarm set successfully :)`, ToastAndroid.LONG);
     }
   }, [text]);
 
@@ -122,12 +107,14 @@ export default function Alarm({ navigation }) {
             )}
           </TouchableOpacity>
         </View>
-        <View>
-          <Text style={styles.timeleft}>
-            Alarm ringing in {hours} hours and {minutes} minutes {'\n'}
-          </Text>
-        </View>
-        <View>
+        {text && (
+          <View>
+            <Text style={styles.timeleft}>
+              Alarm ringing in {hours} hours and {minutes} minutes {'\n'}
+            </Text>
+          </View>
+        )}
+        {/* <View>
           <TouchableOpacity
             onPress={() => {
               navigation.push('AlarmRings');
@@ -136,7 +123,7 @@ export default function Alarm({ navigation }) {
           >
             <Text style={link}>start alarm</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {show && (
           <DateTimePickerAndroid

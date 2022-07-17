@@ -10,14 +10,6 @@ import { buttons, colors, container, link } from '../../styles/constants';
 import Header from '../Header';
 import { UserContext } from '../util/Context';
 
-const { manifest } = Constants;
-
-// access api url
-export const apiBaseUrl =
-  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
-    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/logout`
-    : 'https://api.example.com';
-
 const styles = StyleSheet.create({
   input: {
     fontFamily: 'Comfortaa_400Regular',
@@ -33,12 +25,10 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'Comfortaa_400Regular',
     color: colors.white,
-  },
-  inputContainer: {
-    flex: 1,
+    alignSelf: 'center',
     justifyContent: 'center',
   },
-  buttonsContainer: {
+  textContainer: {
     flex: 1,
     justifyContent: 'center',
   },
@@ -49,11 +39,17 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
 });
+const { manifest } = Constants;
+
+// access api url
+export const apiBaseUrl =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/logout`
+    : 'https://api.example.com';
 
 export default function Welcome({ navigation }) {
   const [appIsReady, setAppIsReady] = useState(false);
   const { user } = useContext(UserContext);
-  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     async function prepare() {
@@ -82,19 +78,6 @@ export default function Welcome({ navigation }) {
     }
   }, [appIsReady]);
 
-  // logout function
-  async function logoutHandler() {
-    // fetch userinfo from database
-    await fetch(apiBaseUrl, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    setUser(null);
-  }
-
   if (!appIsReady) {
     return <View style={container} />;
   }
@@ -109,22 +92,16 @@ export default function Welcome({ navigation }) {
           onPress={() => navigation.push('Profile')}
         />
         <Header title="welcome!" />
-        <Text style={styles.text}>greetings {user.id}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            logoutHandler().catch((e) => {
-              console.log(e);
-            });
-          }}
-          style={buttons}
-        >
-          <Text style={styles.text}>Logout</Text>
-        </TouchableOpacity>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}>
+            No more snoozing! This is an alarm that forces you to get up. How?
+            Once it the alarm rings, you need to go and find a barcode or
+            QR-code to scan. {'\n'}Which one doesn't matter ;)
+          </Text>
+          <Text style={styles.text}>greetings {user.id}</Text>
+        </View>
         <TouchableOpacity onPress={() => navigation.push('Alarm')} style={link}>
           <Text style={link}>Alarm page</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.push('Test')} style={link}>
-          <Text style={link}>Test</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

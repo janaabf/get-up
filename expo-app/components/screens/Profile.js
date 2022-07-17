@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import Constants from 'expo-constants';
+import React, { useContext, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -16,6 +17,7 @@ import {
   titles,
 } from '../../styles/constants';
 import Header from '../Header';
+import { UserContext } from '../util/Context';
 
 const styles = StyleSheet.create({
   input: {
@@ -46,16 +48,38 @@ const styles = StyleSheet.create({
   },
 });
 
+const { manifest } = Constants;
+
+// access api url
+export const apiBaseUrl =
+  typeof manifest.packagerOpts === `object` && manifest.packagerOpts.dev
+    ? `http://${manifest.debuggerHost.split(`:`).shift()}:3000/api/logout`
+    : 'https://api.example.com';
+
 export default function UserProfile({ navigation }) {
   const [username, onChangeUsername] = useState('');
   const [sleepTime, onChangeSleepTime] = useState('');
+  const { setUser } = useContext(UserContext);
+
+  // logout function
+  async function logoutHandler() {
+    // fetch userinfo from database
+    await fetch(apiBaseUrl, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    setUser(null);
+  }
 
   return (
     <SafeAreaView style={container}>
       <View>
-        <View>
+        <TouchableOpacity onPress={() => navigation.push('Welcome')}>
           <Text style={back}>{'<'} back</Text>
-        </View>
+        </TouchableOpacity>
         <Header title="profile" />
 
         {/* <View style={styles.headerContainer}>
@@ -83,10 +107,13 @@ export default function UserProfile({ navigation }) {
           <Text style={styles.text}>save changes</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.push('Welcome')}
-          style={link}
+          onPress={() => {
+            logoutHandler().catch((e) => {
+              console.log(e);
+            });
+          }}
         >
-          <Text style={link}>{'<'} go back without saving changes</Text>
+          <Text style={link}>logout</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
