@@ -9,7 +9,14 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   buttons,
@@ -159,7 +166,7 @@ export default function Login({ navigation }) {
         </Text>
       ))}
       <View style={styles.container}>
-        <Pressable
+        <TouchableOpacity
           onPress={() => {
             loginHandler().catch((e) => {
               console.log(e);
@@ -168,10 +175,13 @@ export default function Login({ navigation }) {
           style={buttons}
         >
           <Text style={styles.text}>Login</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Register')} style={link}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.push('Register')}
+          style={link}
+        >
           <Text style={link}>new here? register {'>'}</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

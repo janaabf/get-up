@@ -7,6 +7,15 @@ export const colors = {
   darkPurple: '#35277C',
 };
 
+export const container = {
+  flex: 1,
+  padding: 20,
+  paddingTop: 40,
+  backgroundColor: colors.black,
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+
 export const buttons = {
   alignItems: 'center',
   justifyContent: 'flex-start',
@@ -17,22 +26,19 @@ export const buttons = {
   backgroundColor: '#7B61FF',
 };
 
+export const back = {
+  color: colors.white,
+  alignSelf: 'flex-start',
+};
+
 export const link = {
   alignItems: 'center',
+  alignSelf: 'center',
   justifyContent: 'flex-start',
   paddingVertical: 12,
   margin: 5,
   color: colors.pink,
   fontFamily: 'Comfortaa_400Regular',
-};
-
-export const container = {
-  flex: 1,
-  padding: 20,
-  paddingTop: 40,
-  backgroundColor: colors.black,
-  alignItems: 'center',
-  justifyContent: 'center',
 };
 
 export const titles = {

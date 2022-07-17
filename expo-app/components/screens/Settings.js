@@ -2,9 +2,16 @@ import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
+  back,
   buttons,
   colors,
   container,
@@ -45,10 +52,11 @@ export default function Settings({ navigation }) {
 
   return (
     <SafeAreaView style={container}>
+      <View>
+        <Text style={back}>back</Text>
+      </View>
+      <Header title="settings" />
       <View style={styles.container}>
-        <View style={styles.headerContainer}>
-          <Text style={titles}>Settings</Text>
-        </View>
         <Text style={styles.text}>e-mail</Text>
         <TextInput
           style={styles.input}
@@ -69,9 +77,12 @@ export default function Settings({ navigation }) {
         />
       </View>
       <View style={styles.container}>
-        <Pressable onPress={() => navigation.navigate('Main')} style={buttons}>
+        <TouchableOpacity
+          onPress={() => navigation.push('Main')}
+          style={buttons}
+        >
           <Text style={styles.text}>save changes</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

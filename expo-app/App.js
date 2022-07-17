@@ -1,12 +1,16 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import Constants from 'expo-constants';
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import Alarm from './components/screens/Alarm';
+import AlarmRings from './components/screens/AlarmRings';
 import Login from './components/screens/Login';
 import UserProfile from './components/screens/Profile';
 import Register from './components/screens/Register';
+import Scanner from './components/screens/Scanner';
+import Test from './components/screens/Test';
 import Welcome from './components/screens/Welcome';
 import { UserContext } from './components/util/Context';
 
@@ -62,11 +66,20 @@ export default function App() {
             <>
               <Stack.Screen name="Welcome" component={Welcome} />
               <Stack.Screen name="Alarm" component={Alarm} />
+              <Stack.Screen name="AlarmRings" component={AlarmRings} />
+              <Stack.Screen name="Test" component={Test} />
+              <Stack.Screen name="Scanner" component={Scanner} />
               <Stack.Screen name="Profile" component={UserProfile} />
             </>
           )}
         </Stack.Navigator>
       </NavigationContainer>
     </UserContext.Provider>
+    // <NavigationContainer>
+    //   <StatusBar style="light" />
+    //   <Stack.Navigator screenOptions={{ headerShown: false }}>
+    //     <Stack.Screen name="Alarm" component={Alarm} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   );
 }

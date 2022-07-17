@@ -1,7 +1,14 @@
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
+  back,
   buttons,
   colors,
   container,
@@ -46,9 +53,14 @@ export default function UserProfile({ navigation }) {
   return (
     <SafeAreaView style={container}>
       <View>
-        <View style={styles.headerContainer}>
-          <Text style={titles}>profile</Text>
+        <View>
+          <Text style={back}>{'<'} back</Text>
         </View>
+        <Header title="profile" />
+
+        {/* <View style={styles.headerContainer}>
+          <Text style={titles}>profile</Text>
+        </View> */}
         <Text style={styles.text}>Please enter your information:</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.text}>name:</Text>
@@ -67,12 +79,15 @@ export default function UserProfile({ navigation }) {
             value={sleepTime}
           />
         </View>
-        <Pressable style={buttons}>
+        <TouchableOpacity style={buttons}>
           <Text style={styles.text}>save changes</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Welcome')} style={link}>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.push('Welcome')}
+          style={link}
+        >
           <Text style={link}>{'<'} go back without saving changes</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

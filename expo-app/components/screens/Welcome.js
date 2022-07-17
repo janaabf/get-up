@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { buttons, colors, container, link } from '../../styles/constants';
 import Header from '../Header';
@@ -106,11 +106,11 @@ export default function Welcome({ navigation }) {
           name="user-circle"
           size={24}
           color="white"
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => navigation.push('Profile')}
         />
         <Header title="welcome!" />
         <Text style={styles.text}>greetings {user.id}</Text>
-        <Pressable
+        <TouchableOpacity
           onPress={() => {
             logoutHandler().catch((e) => {
               console.log(e);
@@ -119,10 +119,13 @@ export default function Welcome({ navigation }) {
           style={buttons}
         >
           <Text style={styles.text}>Logout</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Alarm')} style={link}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push('Alarm')} style={link}>
           <Text style={link}>Alarm page</Text>
-        </Pressable>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push('Test')} style={link}>
+          <Text style={link}>Test</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

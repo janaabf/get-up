@@ -1,6 +1,12 @@
 import Constants from 'expo-constants';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   buttons,
@@ -119,7 +125,7 @@ export default function Register({ navigation }) {
         </Text>
       ))}
       <View style={styles.container}>
-        <Pressable
+        <TouchableOpacity
           onPress={() => {
             registerHandler().catch((e) => {
               console.log(e);
@@ -128,10 +134,10 @@ export default function Register({ navigation }) {
           style={buttons}
         >
           <Text style={styles.text}>register</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Login')} style={link}>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.push('Login')} style={link}>
           <Text style={link}>{'<'} login</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );

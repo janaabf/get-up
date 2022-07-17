@@ -6,7 +6,7 @@ This is a mobile alarm app made with expo/react native for the front end and nex
 
 # Get Started
 
-1. Start frontend in `expo-app`: `yarn start` or `expo start` (or to run on localhost when connecting to a usb device: `yarn start --localhost`)
+1. Start frontend in `expo-app`: `yarn start` or `expo start` (or when connecting to a device via USB: run locally with `expo start --localhost`)
 2. Start backend in `next-backend`: `yarn dev`
 
 # Dev Tools for React Native
