@@ -1,3 +1,4 @@
+import { Caveat_400Regular } from '@expo-google-fonts/caveat';
 import { Comfortaa_400Regular } from '@expo-google-fonts/comfortaa';
 import { FontAwesome } from '@expo/vector-icons';
 import Constants from 'expo-constants';
@@ -11,32 +12,31 @@ import Header from '../Header';
 import { UserContext } from '../util/Context';
 
 const styles = StyleSheet.create({
-  input: {
-    fontFamily: 'Comfortaa_400Regular',
-    color: colors.black,
-    height: 40,
-    width: 300,
-    marginBottom: 20,
-    borderWidth: 1,
-    padding: 10,
-    backgroundColor: colors.white,
-    borderRadius: 10,
-  },
   text: {
     fontFamily: 'Comfortaa_400Regular',
     color: colors.white,
     alignSelf: 'center',
-    justifyContent: 'center',
+    textAlign: 'center',
   },
   textContainer: {
     flex: 1,
-    justifyContent: 'center',
+    textAlign: 'center',
+    justifyContent: 'space-between',
   },
-  dropdown: {
-    backgroundColor: colors.highlight,
+  header: {
+    fontFamily: 'Comfortaa_400Regular',
+    alignSelf: 'center',
+    color: colors.white,
+    fontSize: 36,
   },
   profileIcon: {
     alignSelf: 'flex-end',
+  },
+  title: {
+    fontFamily: 'Caveat_400Regular',
+    fontSize: 70,
+    alignSelf: 'center',
+    color: colors.white,
   },
 });
 const { manifest } = Constants;
@@ -59,6 +59,7 @@ export default function Welcome({ navigation }) {
 
         // Pre-load fonts, make any API calls you need to do here
         await Font.loadAsync({ Comfortaa_400Regular });
+        await Font.loadAsync({ Caveat_400Regular });
       } catch (e) {
         console.warn(e);
       } finally {
@@ -91,14 +92,23 @@ export default function Welcome({ navigation }) {
           color="white"
           onPress={() => navigation.push('Profile')}
         />
-        <Header title="welcome!" />
+        {/* <Header title="welcome" /> */}
         <View style={styles.textContainer}>
+          <View>
+            <Text style={styles.header}>welcome</Text>
+            <Text style={styles.text}>{'\n'}to</Text>
+            <Text style={styles.title}>get up ! </Text>
+          </View>
           <Text style={styles.text}>
-            No more snoozing! This is an alarm that forces you to get up. How?
-            Once it the alarm rings, you need to go and find a barcode or
-            QR-code to scan. {'\n'}Which one doesn't matter ;)
+            This is an alarm that forces you to get up. {'\n'}
+            {'\n'}How? {'\n'}
+            {'\n'}Once the alarm rings, you need to go and find a barcode or
+            QR-code (which one doesn't matter) and scan it, or the alarm won't
+            stop ringing.
+            {'\n'}
+            {'\n'}
           </Text>
-          <Text style={styles.text}>greetings {user.id}</Text>
+          <Text>{'\n'}</Text>
         </View>
         <TouchableOpacity onPress={() => navigation.push('Alarm')} style={link}>
           <Text style={link}>Alarm page</Text>

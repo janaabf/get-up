@@ -5,13 +5,13 @@ import { colors } from '../styles/constants';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     alignItems: 'center',
     width: 350,
   },
 
   title: {
     fontFamily: 'Comfortaa_400Regular',
+    alignSelf: 'center',
     color: colors.white,
     fontSize: 36,
   },

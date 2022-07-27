@@ -37,15 +37,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
   },
-  // button: {
-  //   alignSelf: 'center',
-  //   justifyContent: 'flex-start',
-  //   paddingVertical: 12,
-  //   paddingHorizontal: 32,
-  //   margin: 20,
-  //   borderRadius: 4,
-  //   backgroundColor: '#7B61FF',
-  // },
 });
 
 // handles the notification
@@ -66,9 +57,14 @@ export default function AlarmRings({ navigation }) {
 
   // sound
   async function playSound() {
+    await Audio.setAudioModeAsync({
+      staysActiveInBackground: true,
+    });
+
     console.log('Loading Sound');
     const { sound } = await Audio.Sound.createAsync(
       require('../../assets/Alarm-ringtone.mp3'),
+      { shouldPlay: true, staysActiveInBackground: true },
     );
     setSound(sound);
 

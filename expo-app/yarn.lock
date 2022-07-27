@@ -1090,6 +1090,11 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
+"@expo-google-fonts/caveat@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/caveat/-/caveat-0.2.2.tgz#214686875af390e4467a211e9de8b9167ec4a0cd"
+  integrity sha512-z7kc/7BIwPFTL6el51V2OaLtvxrhtofwqiCk4b0nLCh2kzsso+5IA1fI4NXziou5jEkh9Lt+FE3OUSFQdVVSAQ==
+
 "@expo-google-fonts/comfortaa@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@expo-google-fonts/comfortaa/-/comfortaa-0.2.2.tgz#c144b83e4f596446cb7a35bffbc50390796fbf23"

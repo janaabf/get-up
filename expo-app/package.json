@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo-google-fonts/caveat": "^0.2.2",
     "@expo-google-fonts/comfortaa": "^0.2.2",
     "@react-native-community/datetimepicker": "6.1.2",
     "@react-native-community/masked-view": "^0.1.11",

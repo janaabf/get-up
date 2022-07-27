@@ -62,6 +62,7 @@ export default async function handler(
     const token = crypto.randomBytes(80).toString('base64');
 
     const session = await createSession(token, userId);
+    console.log('session', session);
 
     const serializedCookie = await createSerializedRegisterSessionTokenCookie(
       session.token,

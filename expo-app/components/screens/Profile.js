@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import React, { useContext, useState } from 'react';
 import {
@@ -33,11 +34,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'Comfortaa_400Regular',
+    alignSelf: 'flex-start',
     color: colors.white,
+    fontSize: 18,
   },
   inputContainer: {
     flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
   buttonsContainer: {
     flex: 1,
@@ -77,15 +81,14 @@ export default function UserProfile({ navigation }) {
   return (
     <SafeAreaView style={container}>
       <View>
-        <TouchableOpacity onPress={() => navigation.push('Welcome')}>
-          <Text style={back}>{'<'} back</Text>
-        </TouchableOpacity>
+        <AntDesign
+          name="arrowleft"
+          size={24}
+          style={back}
+          onPress={() => navigation.push('Welcome')}
+        />
         <Header title="profile" />
-
-        {/* <View style={styles.headerContainer}>
-          <Text style={titles}>profile</Text>
-        </View> */}
-        <Text style={styles.text}>Please enter your information:</Text>
+        {/* <Text style={styles.text}>Please enter your information:</Text>
         <View style={styles.inputContainer}>
           <Text style={styles.text}>name:</Text>
           <TextInput
@@ -102,9 +105,21 @@ export default function UserProfile({ navigation }) {
             onChangeText={onChangeSleepTime}
             value={sleepTime}
           />
+        </View> */}
+        <View style={styles.inputContainer}>
+          <Text style={styles.text}>username: {'  '}Jana</Text>
+          <Text>
+            {'\n'}
+            {'\n'}
+          </Text>
+          <Text style={styles.text}>time format: {'  '}24 hours</Text>
+          {/* <Text style={styles.text}>desired hours of sleep:</Text> */}
         </View>
-        <TouchableOpacity style={buttons}>
-          <Text style={styles.text}>save changes</Text>
+        {/* <TouchableOpacity style={buttons}>
+          <Text style={styles.text}>edit</Text>
+        </TouchableOpacity> */}
+        <TouchableOpacity>
+          <Text style={link}>edit information</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {

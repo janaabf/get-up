@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import DateTimePickerAndroid from '@react-native-community/datetimepicker';
 import * as Notifications from 'expo-notifications';
 import react, { useEffect, useState } from 'react';
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: 'Comfortaa_400Regular',
     color: colors.white,
+    borderColor: 'red',
   },
   timeleft: {
     fontFamily: 'Comfortaa_400Regular',
@@ -39,6 +41,7 @@ const styles = StyleSheet.create({
   alarm: {
     flex: 1,
     textAlign: 'center',
+    justifyContent: 'center',
   },
   alarmTime: {
     fontFamily: 'Comfortaa_400Regular',
@@ -86,9 +89,12 @@ export default function Alarm({ navigation }) {
   return (
     <SafeAreaView style={container}>
       <View>
-        <TouchableOpacity onPress={() => navigation.push('Welcome')}>
-          <Text style={back}>{'<'} back</Text>
-        </TouchableOpacity>
+        <AntDesign
+          name="arrowleft"
+          size={24}
+          style={back}
+          onPress={() => navigation.push('Welcome')}
+        />
         <Header title="alarm" />
 
         <View style={styles.alarm}>
@@ -114,17 +120,6 @@ export default function Alarm({ navigation }) {
             </Text>
           </View>
         )}
-        {/* <View>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.push('AlarmRings');
-            }}
-            style={link}
-          >
-            <Text style={link}>start alarm</Text>
-          </TouchableOpacity>
-        </View> */}
-
         {show && (
           <DateTimePickerAndroid
             testID="dateTimePicker"

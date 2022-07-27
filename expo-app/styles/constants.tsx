@@ -36,7 +36,7 @@ export const link = {
   alignItems: 'center',
   alignSelf: 'center',
   justifyContent: 'flex-start',
-  paddingVertical: 12,
+  paddingVertical: 14,
   margin: 5,
   color: colors.pink,
   fontFamily: 'Comfortaa_400Regular',

@@ -24,7 +24,7 @@ Docs: https://docs.expo.dev/workflow/debugging/
 
 3. start frontend server `yarn start` / `yarn start --localhost` (USB-connection) --> reload application if needed
 
-4. Enable Network Inspect
+4. Right Click > Enable Network Inspect
 
 5. (IF THE DEVTOOLS SHOW AN ERROR MESSAGE)
 
