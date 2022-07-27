@@ -1,4 +1,4 @@
-# sleep companion
+# get up!
 
 Welcome to my final project for the upLeveled bootcamp!
 
