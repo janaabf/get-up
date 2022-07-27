@@ -9,6 +9,45 @@ This is a mobile alarm app made with expo/react native for the front end and nex
 1. Start frontend in `expo-app`: `yarn start` or `expo start` (or when connecting to a device via USB: run locally with `expo start --localhost`)
 2. Start backend in `next-backend`: `yarn dev`
 
+# About the App
+
+## What you can do:
+
+1. Login or create an account (creates session token, so you stay logged in)
+2. Set an alarm (it calculates the time left until it rings)
+3. Edit alarm time once it is set
+4. Stop alarm by scanning almost any QR or barcode
+
+## Technologies Used
+
+- React Native with Expo
+- PostgreSQL
+
+### Libraries/Tools:
+
+- Prototype:
+
+  - Figma
+  - DrawSQL
+
+- Main Expo features used:
+
+  - Barcode Scanner
+  - Notifications
+  - Audio
+  - Vector Icons
+
+- Main external libraries for frontend:
+
+  - use-react-countdown
+
+- Main external libraries for backend:
+  - postgres
+  - dotenv-safe
+  - cookie & js-cookie
+  - node:crypto (to create random token)
+  - bcrypt (to encrypt password)
+
 # Dev Tools for React Native
 
 There are two options: one is to use the debugging features already on your machine (differs a little bit with each emulator), or using the React Native Debugger (recommended!)
@@ -62,7 +101,3 @@ Gives less options, e.g. misses the Network Inspection and does not show the tre
 5. for more information options access:
    - Open http://localhost:19000/debugger-ui/
    - Right click > inspect
-
-# Libraries
-
-- React Native DateTimePicker: https://github.com/react-native-datetimepicker/datetimepicker
