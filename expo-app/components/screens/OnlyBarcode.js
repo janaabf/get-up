@@ -1,4 +1,3 @@
-import { Comfortaa_300Light } from '@expo-google-fonts/comfortaa';
 import { Audio } from 'expo-av';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import * as Notifications from 'expo-notifications';
@@ -28,13 +27,6 @@ const styles = StyleSheet.create({
 
     alignItems: 'center',
   },
-  questionnaireModalView: {
-    flex: 1,
-    width: 405,
-    margin: 70,
-    alignItems: 'center',
-    backgroundColor: colors.black,
-  },
   barcode: {
     flex: 1,
     width: 400,
@@ -44,35 +36,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
-  },
-  questionnaireCenteredView: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 22,
-  },
-  answers: {
-    flex: 1,
-    margin: 50,
-  },
-  answerBox: {
-    borderWidth: 2,
-    borderRadius: 5,
-    borderColor: colors.highlight,
-    padding: 10,
-    margin: 10,
-    width: 300,
-  },
-  answerButton: {
-    flex: 1,
-    margin: 30,
-    backgroundColor: colors.purple,
-  },
-  questionCount: {
-    fontFamily: 'Comfortaa_400Regular',
-    color: colors.purple,
-    alignSelf: 'flex-end',
-    marginRight: 30,
   },
 });
 
@@ -89,7 +52,6 @@ export default function AlarmRings({ navigation }) {
   const animation = useRef(null);
   const [sound, setSound] = useState();
   const [barcodeModalVisible, setBarcodeModalVisible] = useState(false);
-  const [quizModalVisible, setQuizModalVisible] = useState(false);
   const [scanned, setScanned] = useState(false);
   // const [show, setShow] = useState(false); // show barcode scanner
 
@@ -117,8 +79,7 @@ export default function AlarmRings({ navigation }) {
     Vibration.cancel();
   }
   useEffect(() => {
-    // playSound();
-
+    playSound();
     // sends notification
     async function scheduleNotificationAsync() {
       Notifications.scheduleNotificationAsync({
@@ -134,12 +95,10 @@ export default function AlarmRings({ navigation }) {
 
   const handleBarCodeScanned = () => {
     setScanned(true);
-    stopSound(); // move to questionnaire
-
+    stopSound();
     alert(`You did it! Good morning <3`);
     setBarcodeModalVisible(false);
-    setQuizModalVisible(true); // open questionnaire modal
-    navigation.push('Alarm'); // move to questionnaire
+    navigation.push('Alarm');
   };
 
   return (
@@ -147,7 +106,7 @@ export default function AlarmRings({ navigation }) {
       <View style={styles.container}>
         <Modal
           animationType="fade"
-          transparent={false}
+          transparent={true}
           visible={barcodeModalVisible}
           onRequestClose={() => {
             Alert.alert('Modal has been closed.');
@@ -163,40 +122,6 @@ export default function AlarmRings({ navigation }) {
             </View>
           </View>
         </Modal>
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={quizModalVisible}
-          onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
-            setQuizModalVisible(!quizModalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <Text style={styles.questionCount}>0/2</Text>
-            <View style={styles.questionnaireModalView}>
-              <Text style={styles.text}>Question goes here</Text>
-              <View style={styles.answers}>
-                <TouchableOpacity style={styles.answerBox}>
-                  <Text style={styles.text}>Answer</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.answerBox}>
-                  <Text style={styles.text}>Answer</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.answerBox}>
-                  <Text style={styles.text}>Answer</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.answerBox}>
-                  <Text style={styles.text}>Answer</Text>
-                </TouchableOpacity>
-              </View>
-              <TouchableOpacity style={buttons}>
-                <Text style={styles.text}>Answer</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
         <LottieView
           autoPlay
           ref={animation}
@@ -209,9 +134,8 @@ export default function AlarmRings({ navigation }) {
         <TouchableOpacity
           onPress={() => {
             {
-              // setBarcodeModalVisible(true);
-              setQuizModalVisible(true);
-              // setScanned(false);
+              setBarcodeModalVisible(true);
+              setScanned(false);
             }
           }}
           style={buttons}
