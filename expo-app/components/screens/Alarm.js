@@ -58,11 +58,21 @@ export default function Alarm({ navigation }) {
 
   // handles setting the alarm time (Date format)
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    console.log(selectedDate);
+    const currentTime = new Date();
+    let alarm;
+    if (selectedDate > currentTime) {
+      alarm = selectedDate;
+    } else {
+      selectedDate.setDate(selectedDate.getDate() + 1);
+      alarm = selectedDate;
+      console.log('future date', alarm);
+    }
+    const alarmDate = alarm;
     setShow(Platform.OS === 'ios');
-    console.log(currentDate);
-    setDate(currentDate);
-    setText(`${currentDate.getHours()}:${currentDate.getMinutes()}`);
+    console.log(alarmDate);
+    setDate(alarmDate);
+    setText(`${alarmDate.getHours()}:${alarmDate.getMinutes()}`);
   };
 
   // calculate time left until alarm rings
@@ -98,20 +108,24 @@ export default function Alarm({ navigation }) {
         <Header title="alarm" />
 
         <View style={styles.alarm}>
-          <TouchableOpacity
-            onPress={() => {
-              setShow(!show);
-            }}
-          >
-            {text ? (
-              <>
-                <Text style={styles.alarmTime}>{text}</Text>
-                <Text style={link}>edit time</Text>
-              </>
-            ) : (
+          {text ? (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('Alarm');
+              }}
+            >
+              <Text style={styles.alarmTime}>{text}</Text>
+              <Text style={link}>edit time</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                setShow(!show);
+              }}
+            >
               <Text style={link}>please set an alarm</Text>
-            )}
-          </TouchableOpacity>
+            </TouchableOpacity>
+          )}
         </View>
         {text && (
           <View>
